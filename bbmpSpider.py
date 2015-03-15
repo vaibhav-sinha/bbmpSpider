@@ -9,6 +9,8 @@ def scrape():
 	'http://bbmp.gov.in/councillors-contact-details?p_p_id=councillors_WAR_councillorsportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-2&p_p_col_count=1&_councillors_WAR_councillorsportlet_delta=75&_councillors_WAR_councillorsportlet_keywords=&_councillors_WAR_councillorsportlet_advancedSearch=false&_councillors_WAR_councillorsportlet_andOperator=true&_councillors_WAR_councillorsportlet_resetCur=false&cur=2',
 	'http://bbmp.gov.in/councillors-contact-details?p_p_id=councillors_WAR_councillorsportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-2&p_p_col_count=1&_councillors_WAR_councillorsportlet_delta=75&_councillors_WAR_councillorsportlet_keywords=&_councillors_WAR_councillorsportlet_advancedSearch=false&_councillors_WAR_councillorsportlet_andOperator=true&_councillors_WAR_councillorsportlet_resetCur=false&cur=3'
                  ]
+	party_url = 'http://www.mybengaluru.com/resources/2999-BBMP-ELection-List-Winning-Candidate.aspx'
+
 	filename = 'bbmp_data.json'
 	neta_list = []
 	for url in urls:
@@ -46,6 +48,14 @@ def scrape():
 				count = count + 1
 				field = 0
 		
+	page = requests.get(party_url)
+	raw = page.text
+	tree = html.fromstring(raw)
+	
+	data = tree.xpath("//table[@class='tableizer-table']//tr//td/text()")
+	for i in range(0, len(neta_list)):
+		neta_list[i]['party'] = data[i*7 + 6]
+	#print data
 		
 	#print neta_list
 	print "Scrapped ", str(len(neta_list)), " records"
