@@ -40,7 +40,7 @@ def scrape():
 				photo = 'http://bbmp.gov.in/councillors-contact-details?p_p_id=councillors_WAR_councillorsportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_resource_id=getimage&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_count=1&_councillors_WAR_councillorsportlet_action=serveResource&_councillors_WAR_councillorsportlet_filename='+str(count+1)+'.jpg&_councillors_WAR_councillorsportlet_keywords=&_councillors_WAR_councillorsportlet_resetCur=false&_councillors_WAR_councillorsportlet_cur=2&_councillors_WAR_councillorsportlet_advancedSearch=false&_councillors_WAR_councillorsportlet_andOperator=true&_councillors_WAR_councillorsportlet_delta=75'
 			index = index + 1
 			if index%14 == 0:
-				neta = {'ward_number':ward_number, 'ward_name':ward_name, 'ward_area_sqkm':ward_area_sqkm, 'ac_name':ac_name, 'address':address, 'photo': photo, 'phone':phone}
+				neta = {'ward_number':ward_number, 'ward_name':ward_name, 'ward_area_sqkm':ward_area_sqkm, 'ac_name':ac_name, 'name': name, 'address':address, 'photo': photo, 'phone':phone}
 				neta_list.append(neta)
 				#print neta
 				count = count + 1
