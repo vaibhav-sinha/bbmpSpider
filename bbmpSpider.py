@@ -2,7 +2,7 @@ from webscraping import common, download, xpath
 from lxml import html
 import requests
 import json
-
+import re
 
 def scrape():
         urls = ['http://bbmp.gov.in/councillors-contact-details?p_p_id=councillors_WAR_councillorsportlet&p_p_lifecycle=0&p_p_state=normal&p_p_mode=view&p_p_col_id=column-3&p_p_col_count=1&_councillors_WAR_councillorsportlet_keywords=&_councillors_WAR_councillorsportlet_advancedSearch=false&_councillors_WAR_councillorsportlet_andOperator=true&_councillors_WAR_councillorsportlet_resetCur=false&_councillors_WAR_councillorsportlet_delta=75',
@@ -20,6 +20,7 @@ def scrape():
 		tree = html.fromstring(raw)
 		
 		data = tree.xpath("//div[@class='aui-column-content  aui-column-content-last ']/text()")
+		photos = tree.xpath("//div[@class='aui-column-content aui-column-content-first  ']/img/@src")
 		count = 0
 		index = 0
 		field = 0
@@ -40,7 +41,8 @@ def scrape():
 				if field == 6:
 					phone = j.strip()
 				field = field + 1
-				photo = 'http://bbmp.gov.in/councillors-contact-details?p_p_id=councillors_WAR_councillorsportlet&p_p_lifecycle=2&p_p_state=normal&p_p_mode=view&p_p_resource_id=getimage&p_p_cacheability=cacheLevelPage&p_p_col_id=column-2&p_p_col_count=1&_councillors_WAR_councillorsportlet_action=serveResource&_councillors_WAR_councillorsportlet_filename='+str(count+1+offset)+'.jpg&_councillors_WAR_councillorsportlet_keywords=&_councillors_WAR_councillorsportlet_resetCur=false&_councillors_WAR_councillorsportlet_cur=2&_councillors_WAR_councillorsportlet_advancedSearch=false&_councillors_WAR_councillorsportlet_andOperator=true&_councillors_WAR_councillorsportlet_delta=75'
+				photo = photos[count].replace('amp;', '')
+				photo = re.sub(r";jsessionid=.{32}.node-01", '', photo)
 			index = index + 1
 			if index%14 == 0:
 				neta = {'ward_number':ward_number, 'ward_name':ward_name, 'ward_area_sqkm':ward_area_sqkm, 'ac_name':ac_name, 'name': name, 'address':address, 'photo': photo, 'phone':phone}
